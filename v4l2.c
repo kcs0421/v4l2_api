@@ -45,7 +45,7 @@ struct buffer          *buffers;
 static unsigned int     n_buffers;
 static int              out_buf;
 static int              force_format;
-static int              frame_count = 200;
+static int              frame_count = 60;
 static int              frame_number = 0;
 
 static void errno_exit(const char *s)
@@ -488,10 +488,10 @@ static void init_device(void)
 
         fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
         if (force_format) {
-	fprintf(stderr, "Set YUYV\r\n");
+	fprintf(stderr, "Set UYVY\r\n");
                 fmt.fmt.pix.width       = 1920; //replace
                 fmt.fmt.pix.height      = 1080; //replace
-                fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_YUYV; //replace
+                fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_UYVY; //replace
                 fmt.fmt.pix.field       = V4L2_FIELD_ANY;
 
                 if (-1 == xioctl(fd, VIDIOC_S_FMT, &fmt))
@@ -550,7 +550,7 @@ static void open_device(void)
                 exit(EXIT_FAILURE);
         }
 
-        fd = open(dev_name, O_RDWR /* required */ | O_NONBLOCK, 0);
+        fd = open(dev_name, O_RDWR /* required */ | O_NONBLOCK, 0 | O_CREAT, 0666);
 
         if (-1 == fd) {
                 fprintf(stderr, "Cannot open '%s': %d, %s\n",
@@ -571,7 +571,7 @@ static void usage(FILE *fp, int argc, char **argv)
                  "-r | --read          Use read() calls\n"
                  "-u | --userp         Use application allocated buffers\n"
                  "-o | --output        Outputs stream to stdout\n"
-                 "-f | --format        Force format to 1920x1080 YUYV\n"
+                 "-f | --format        Force format to 1920x1080 UYVY\n"
                  "-c | --count         Number of frames to grab [%i]\n"
                  "",
                  argv[0], dev_name, frame_count);
