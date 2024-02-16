@@ -27,10 +27,6 @@
 
 #define CLEAR(x) memset(&(x), 0, sizeof(x))
 
-#ifndef V4L2_PIX_FMT_H264
-#define V4L2_PIX_FMT_H264     v4l2_fourcc('H', '2', '6', '4') /* H264 with start codes */
-#endif
-
 enum io_method {
         IO_METHOD_READ,
         IO_METHOD_MMAP,
@@ -492,10 +488,10 @@ static void init_device(void)
 
         fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
         if (force_format) {
-	fprintf(stderr, "Set H264\r\n");
-                fmt.fmt.pix.width       = 640; //replace
-                fmt.fmt.pix.height      = 480; //replace
-                fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_H264; //replace
+	fprintf(stderr, "Set YUYV\r\n");
+                fmt.fmt.pix.width       = 1920; //replace
+                fmt.fmt.pix.height      = 1080; //replace
+                fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_YUYV; //replace
                 fmt.fmt.pix.field       = V4L2_FIELD_ANY;
 
                 if (-1 == xioctl(fd, VIDIOC_S_FMT, &fmt))
@@ -575,7 +571,7 @@ static void usage(FILE *fp, int argc, char **argv)
                  "-r | --read          Use read() calls\n"
                  "-u | --userp         Use application allocated buffers\n"
                  "-o | --output        Outputs stream to stdout\n"
-                 "-f | --format        Force format to 640x480 YUYV\n"
+                 "-f | --format        Force format to 1920x1080 YUYV\n"
                  "-c | --count         Number of frames to grab [%i]\n"
                  "",
                  argv[0], dev_name, frame_count);
