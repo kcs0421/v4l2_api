@@ -22,10 +22,9 @@ static int xioctl(int fd, int request, void *arg)
     return r;
 }
 
-CaptureV4L2::CaptureV4L2(std::string device){ 
-    if(open_camera(device))
+CaptureV4L2::CaptureV4L2(){ 
+    if(open_camera())
         return;
-
 }
 
 int CaptureV4L2::print_caps()
@@ -177,14 +176,14 @@ int CaptureV4L2::save_img(){
     return 0;
 }
 
-int CaptureV4L2::open_camera(std::string device){
-    fd_ = open(device.c_str(), O_RDWR);
+int CaptureV4L2::open_camera(){
+    fd_ = open("/dev/video0", O_RDWR);
     if (fd_ == -1)
     {
         perror("Opening video device");
         //return 1;
     }
-    printf("Successfully open device %s.\n", device.c_str());
+    printf("Successfully open device\n");
 
     return 0;
 
@@ -216,7 +215,7 @@ void CaptureV4L2::run(){
 
 int main(int argc, char** argv)
 {
-    CaptureV4L2 capture_v4l2(std::string("/dev/video0"));
+    CaptureV4L2 capture_v4l2;
 
     capture_v4l2.run();
 
