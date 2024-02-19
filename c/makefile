@@ -1,10 +1,10 @@
 #!/bin/bash
-CC = g++
-CXXFLAGS = -Wall
-SRCS = capturev4l2.cpp
+CC = gcc
+CFLAGS = -W -Wall
+SRCS = v4l2.c
 TARGET = test
 $(TARGET):$(SRCS)
 	$(CC) $(CFLAGS) -o $(TARGET) $(SRCS)
 
 clean:
-	rm -f $(OBJECTS) $(TARGET)
+	rm -f $(OBJECTS) $(TARGET) core
