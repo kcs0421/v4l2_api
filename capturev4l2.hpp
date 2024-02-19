@@ -28,6 +28,7 @@ class CaptureV4L2
         // functions
         int open_camera();
         int print_caps();
+        int set_pix_fmt();
         int init_mmap();
         int capture_image();
         int process_buffer(const void *p);

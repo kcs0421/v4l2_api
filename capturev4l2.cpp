@@ -49,6 +49,11 @@ int CaptureV4L2::print_caps()
             (caps.version>>24)&&0xff,
             caps.capabilities);
 
+    return 0;
+}
+
+int CaptureV4L2::set_pix_fmt()
+{
     struct v4l2_format fmt = {0};
     fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
     fmt.fmt.pix.width = 1920;
@@ -195,6 +200,9 @@ void CaptureV4L2::close_camera(){
 
 void CaptureV4L2::run(){
     if(print_caps())
+        return;
+
+    if(set_pix_fmt())
         return;
 
     if(init_mmap())
