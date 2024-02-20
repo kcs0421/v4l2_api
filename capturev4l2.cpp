@@ -131,7 +131,7 @@ int CaptureV4L2::capture_image()
     buf.index = 0;
     if(-1 == xioctl(fd_, VIDIOC_QBUF, &buf))
     {
-        perror("Query Buffer");
+        perror("Queue Buffer");
         return 1;
     }
  
