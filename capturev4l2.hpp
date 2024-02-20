@@ -33,6 +33,7 @@ class CaptureV4L2
         int capture_image();
         int process_buffer(const void *p);
         int save_img();
+        int stop_stream();
         void close_camera();
 
 };

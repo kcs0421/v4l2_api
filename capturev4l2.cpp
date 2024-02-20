@@ -11,6 +11,8 @@
 
 #include "capturev4l2.hpp"
 
+#define BUF 2
+
 static int xioctl(int fd, int request, void *arg)
 {
     int r;
@@ -32,8 +34,8 @@ int CaptureV4L2::print_caps()
     struct v4l2_capability caps = {};
     if (-1 == xioctl(fd_, VIDIOC_QUERYCAP, &caps))
     {
-            perror("Querying Capabilities");
-            return 1;
+        perror("Querying Capabilities");
+        return 1;
     }
 
     printf( "Driver Caps:\n"
@@ -86,7 +88,7 @@ int CaptureV4L2::set_pix_fmt()
 int CaptureV4L2::init_mmap()
 {
     struct v4l2_requestbuffers req = {0};
-    req.count = 1;
+    req.count = BUF;
     req.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
     req.memory = V4L2_MEMORY_MMAP;
  
@@ -160,7 +162,7 @@ int CaptureV4L2::capture_image()
  
     return 0;
 }
-
+#if 0
 int CaptureV4L2::process_buffer(const void *p)
 {
     unsigned char tmp;
@@ -170,7 +172,7 @@ int CaptureV4L2::process_buffer(const void *p)
 
     return 0;
 }
-
+#endif
 int CaptureV4L2::save_img()
 {
     FILE * pFile = fopen ("image.raw", "wb");
@@ -200,42 +202,34 @@ int CaptureV4L2::open_camera()
     return 0;
 }
 
-void CaptureV4L2::close_camera()
+int CaptureV4L2::stop_stream()
 {
     struct v4l2_buffer buf = {0};
     buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-    buf.memory = V4L2_MEMORY_MMAP;
-    buf.index = 0;
 
     if(-1 == xioctl(fd_, VIDIOC_STREAMOFF, &buf.type))
     {
         perror("Stop Capture");
+        return 1;
     }
 
+    return 0;
+}
+
+void CaptureV4L2::close_camera()
+{
     close(fd_);
 }
 
 void CaptureV4L2::run(){
-    if(print_caps())
-        return;
-
-    if(set_pix_fmt())
-        return;
-
-    if(init_mmap())
-        return;
-
-    if(capture_image())
-        return;
-
-    if(process_buffer((const void *)buffer_.start))
-        return;	
-
-    if(save_img())
-        return;
-
+    print_caps();
+    set_pix_fmt();
+    init_mmap();
+    capture_image();
+    // process_buffer((const void *)buffer_.start);
+    save_img();
+    stop_stream();
     close_camera();
-
 }
 
 int main(int argc, char** argv)
