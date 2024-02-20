@@ -113,7 +113,7 @@ int CaptureV4L2::init_mmap()
       printf("Failed mapping device memory");
       return 1;
     }
-    printf("Length: %d\nAddress: %p\n", buf.length, buffer_.start);
+    printf("Length(file size): %d\nAddress: %p\n", buf.length, buffer_.start);
  
     return 0;
 }
@@ -188,7 +188,9 @@ int CaptureV4L2::open_camera(){
         perror("Opening video device");
         //return 1;
     }
-    printf("Successfully open device\n");
+    else {
+        printf("Successfully open device\n");
+    }
 
     return 0;
 
