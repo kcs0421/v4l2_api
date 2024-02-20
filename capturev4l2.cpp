@@ -37,17 +37,17 @@ int CaptureV4L2::print_caps()
     }
 
     printf( "Driver Caps:\n"
-            "  Driver: \"%s\"\n"
-            "  Card: \"%s\"\n"
-            "  Bus: \"%s\"\n"
-            "  Version: %d.%d\n"
-            "  Capabilities: %08x\n",
-            caps.driver,
+            "  Name: \"%s\"\n"
+            "  Driver: \"%s\"\n",
+            // "  Bus: \"%s\"\n"
+            // "  Version: %d.%d\n"
+            // "  Capabilities: %08x\n",
             caps.card,
-            caps.bus_info,
-            (caps.version>>16)&&0xff,
-            (caps.version>>24)&&0xff,
-            caps.capabilities);
+            caps.driver);
+            // caps.bus_info,
+            // (caps.version>>16)&&0xff,
+            // (caps.version>>24)&&0xff,
+            // caps.capabilities);
 
     return 0;
 }
@@ -73,12 +73,12 @@ int CaptureV4L2::set_pix_fmt()
     printf( "Selected Camera Mode:\n"
             "  Width: %d\n"
             "  Height: %d\n"
-            "  PixFmt: %s\n"
-            "  Field: %d\n",
+            "  PixFmt: %s\n",
+            // "  Field: %d\n",
             fmt.fmt.pix.width,
             fmt.fmt.pix.height,
-            fourcc,
-            fmt.fmt.pix.field);
+            fourcc);
+            // fmt.fmt.pix.field);
 
     return 0;
 }
@@ -113,7 +113,10 @@ int CaptureV4L2::init_mmap()
       printf("Failed mapping device memory");
       return 1;
     }
-    printf("Length(file size): %d\nAddress: %p\n", buf.length, buffer_.start);
+    printf("Length(file size): %d\n",
+        // "Address: %p\n",
+        buf.length);
+        // buffer_.start);
  
     return 0;
 }
@@ -158,8 +161,8 @@ int CaptureV4L2::capture_image()
     return 0;
 }
 
-int CaptureV4L2::process_buffer(const void *p){
-
+int CaptureV4L2::process_buffer(const void *p)
+{
     unsigned char tmp;
     unsigned short *src_short = (unsigned short *)p;
     unsigned char *dst = (unsigned char *)p;
@@ -168,7 +171,8 @@ int CaptureV4L2::process_buffer(const void *p){
     return 0;
 }
 
-int CaptureV4L2::save_img(){
+int CaptureV4L2::save_img()
+{
     FILE * pFile = fopen ("image.raw", "wb");
     if(pFile==NULL){
         perror("ERROR: Cannot open output file");
@@ -181,7 +185,8 @@ int CaptureV4L2::save_img(){
     return 0;
 }
 
-int CaptureV4L2::open_camera(){
+int CaptureV4L2::open_camera()
+{
     fd_ = open("/dev/video0", O_RDWR);
     if (fd_ == -1)
     {
@@ -193,10 +198,20 @@ int CaptureV4L2::open_camera(){
     }
 
     return 0;
-
 }
 
-void CaptureV4L2::close_camera(){
+void CaptureV4L2::close_camera()
+{
+    struct v4l2_buffer buf = {0};
+    buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+    buf.memory = V4L2_MEMORY_MMAP;
+    buf.index = 0;
+
+    if(-1 == xioctl(fd_, VIDIOC_STREAMOFF, &buf.type))
+    {
+        perror("Stop Capture");
+    }
+
     close(fd_);
 }
 
