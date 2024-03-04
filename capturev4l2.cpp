@@ -184,35 +184,6 @@ int CaptureV4L2::save_img()
 }
 int CaptureV4L2::save_jpeg()
 {
-    // ifstream file("image.raw", ios::binary | ios::ate);
-    // streamsize size = file.tellg();
-    // file.seekg(0, ios::beg);
-    // vector<char> buffer(size);
-    // if (!file.read(buffer.data(), size)) {
-    //     cout << "Error reading raw image file." << endl;
-    //     return -1;
-    // }
-    // Mat raw_image(Size(1920, 1080), CV_8UC3, buffer.data());
-    // imwrite("image.jpg", raw_image);
-//
-    // FILE *file = fopen("image.raw", "rb");
-    // vector<char> buffer(1920 * 1080 * 2);
-    // size_t bytesRead = fread(buffer.data(), sizeof(char), buffer.size(), file);
-    // fclose(file);
-    // Mat raw_image(Size(1920, 1080), CV_8UC3, buffer.data());
-    // imwrite("image.jpeg", raw_image);
-    
-    // printf("jpeg saved\n");
-//
-    // FILE * pFile = fopen("image.raw", "rb");
-    // std::vector<char> buffer(buffer_.length);
-    // fread(buffer.data(), sizeof(char), buffer_.length, pFile);
-    // Mat raw2jpeg(Size(1920, 1080), CV_8UC3, buffer.data());
-    // imwrite("image2.jpeg", raw2jpeg);
-    // fclose(pFile);
-
-    // printf("jpeg saved\n");
-//
     //파일스트림: 파일을 읽고 쓸 수 있도록 지원하는 클래스
     //raw 파일을 파일스트림 fs에 바이너리 형태로 저장
     ifstream fs("image.raw", ios::binary);
@@ -226,35 +197,7 @@ int CaptureV4L2::save_jpeg()
     cvtColor(uyvy2mat, uyvy2bgr, COLOR_YUV2BGR_UYVY);
     imwrite("image3.jpeg", uyvy2bgr);
  
-    printf("jpeg saved\n");  
-//
-    // FILE * pFile = fopen("image.raw", "rb");
-    // unsigned char* rawBuffer;
-    // fread(rawBuffer, sizeof(char), buffer_.length, pFile);
-    // cv::Mat saveJpeg(Size(1920, 1080), CV_8UC3, rawBuffer);
-    // cv::imwrite("1.jpeg", saveJpeg);
-    // fclose(pFile);
-
-    // std::string path = "./image.raw";
-    // cv::Mat raw2jpeg = cv::imread(path, cv::IMREAD_ANYCOLOR);
-    // if (raw2jpeg.empty())
-    // {
-    //     std::cerr << "raw file load fail" << std::endl;
-    //     // return -1;
-    // }
-
-    // unsigned char* pData = raw2jpeg.data;
-    // int wd = raw2jpeg.cols;
-    // int he = raw2jpeg.rows;
-    // int channelraw = raw2jpeg.channels();
-    // int depthraw = raw2jpeg.depth();
-    // int typeraw = raw2jpeg.type();
-
-    // std::cout << "width : " << wd << std::endl;
-    // std::cout << "height : " << he << std::endl;
-    // std::cout << "channel : " << channelraw << std::endl;
-    // std::cout << "depth : " << depthraw << std::endl;
-    // std::cout << "type : " << typeraw << std::endl;
+    printf("jpeg saved\n");
 
     return 0;
 }
