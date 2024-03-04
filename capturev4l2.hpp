@@ -31,7 +31,6 @@ class CaptureV4L2
         int set_pix_fmt();
         int init_mmap();
         int capture_image();
-        int process_buffer(const void *p);
         int save_img();
         int save_jpeg();
         int stop_stream();
