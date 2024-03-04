@@ -193,12 +193,23 @@ int CaptureV4L2::save_jpeg()
     fs.read(buffer.data(), buffer_.length);
     //버퍼의 이미지데이터를 mat 형식으로 변경
     Mat uyvy2mat(Size(1920, 1080), CV_8UC2, buffer.data());
-    Mat uyvy2bgr;
     //mat 형식의 이미지데이터를 BGR로 변경
+    Mat uyvy2bgr;
     cvtColor(uyvy2mat, uyvy2bgr, COLOR_YUV2BGR_UYVY);
     imwrite("image3.jpeg", uyvy2bgr);
  
     printf("jpeg saved\n");
+
+    // FILE * pFile = fopen("image.raw", "rb");
+    // vector<unsigned char> buffer(buffer_.length);
+    // fread(buffer.data(), sizeof(unsigned char), buffer_.length, pFile);
+    // fclose(pFile);
+    // Mat uyvy2mat(Size(1920, 1080), CV_8UC2, buffer.data());
+    // Mat uyvy2bgr;
+    // cvtColor(uyvy2mat, uyvy2bgr, COLOR_YUV2BGR_UYVY);
+    // imwrite("image3.jpg", uyvy2bgr);
+
+    // printf("jpeg saved\n");
 
     return 0;
 }
