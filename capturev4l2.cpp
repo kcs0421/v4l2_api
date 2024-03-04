@@ -187,7 +187,7 @@ int CaptureV4L2::save_jpeg()
     //파일스트림: 파일을 읽고 쓸 수 있도록 지원하는 클래스
     //raw 파일을 파일스트림 fs에 바이너리 형태로 저장
     ifstream fs("image.raw", ios::binary);
-    //이미지데이터를 저장해놓을 버퍼를 생성
+    //이미지데이터를 저장해놓을 버퍼를 생성(opencv mat 함수의 형태와 호환되도록 vector로 생성)
     vector<char> buffer(buffer_.length);
     //read로 파일스트림 fs에 저장된 이미지데이터를 버퍼에 불러옴
     fs.read(buffer.data(), buffer_.length);
