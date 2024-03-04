@@ -194,6 +194,7 @@ int CaptureV4L2::save_jpeg()
     //버퍼의 이미지데이터를 mat 형식으로 변경
     Mat uyvy2mat(Size(1920, 1080), CV_8UC2, buffer.data());
     Mat uyvy2bgr;
+    //mat 형식의 이미지데이터를 BGR로 변경
     cvtColor(uyvy2mat, uyvy2bgr, COLOR_YUV2BGR_UYVY);
     imwrite("image3.jpeg", uyvy2bgr);
  
