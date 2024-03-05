@@ -207,7 +207,7 @@ int CaptureV4L2::save_jpeg()
     // Mat uyvy2mat(Size(1920, 1080), CV_8UC2, buffer.data());
     // Mat uyvy2bgr;
     // cvtColor(uyvy2mat, uyvy2bgr, COLOR_YUV2BGR_UYVY);
-    // imwrite("image3.jpg", uyvy2bgr);
+    // imwrite("image3.jpeg", uyvy2bgr);
 
     // printf("jpeg saved\n");
 
