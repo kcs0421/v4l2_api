@@ -34,7 +34,7 @@ CaptureV4L2::CaptureV4L2(){
     if(open_camera())
         return;
 }
-
+#if 0
 int CaptureV4L2::print_caps()
 {
     struct v4l2_capability caps = {};
@@ -59,7 +59,7 @@ int CaptureV4L2::print_caps()
 
     return 0;
 }
-
+#endif
 int CaptureV4L2::set_pix_fmt()
 {
     struct v4l2_format fmt = {0};
@@ -74,7 +74,7 @@ int CaptureV4L2::set_pix_fmt()
         perror("Setting Pixel Format");
         return 1;
     }
-
+#if 0
     char fourcc[5] = {0};
 
     strncpy(fourcc, (char *)&fmt.fmt.pix.pixelformat, 4);
@@ -87,7 +87,7 @@ int CaptureV4L2::set_pix_fmt()
             fmt.fmt.pix.height,
             fourcc);
             // fmt.fmt.pix.field);
-
+#endif
     return 0;
 }
 
@@ -117,15 +117,17 @@ int CaptureV4L2::init_mmap()
     buffer_.length = buf.length;
     buffer_.start = static_cast<unsigned char *>(mmap (NULL, buf.length, PROT_READ | PROT_WRITE, MAP_SHARED, fd_, buf.m.offset));
 
-    if (MAP_FAILED == buffer_.start) {
-      printf("Failed mapping device memory");
+    if (MAP_FAILED == buffer_.start)
+    {
+      perror("Failed mapping device memory");
       return 1;
     }
+#if 0
     printf("Length(file size): %d\n",
         // "Address: %p\n",
         buf.length);
         // buffer_.start);
- 
+#endif 
     return 0;
 }
 
@@ -248,8 +250,8 @@ void CaptureV4L2::close_camera()
 }
 
 void CaptureV4L2::run(){
-    if(print_caps())
-        return;
+//    if(print_caps())
+//        return;
     if(set_pix_fmt())
         return;
     if(init_mmap())
